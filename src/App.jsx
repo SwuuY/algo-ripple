@@ -1,7 +1,12 @@
 import React from 'react';
+import SortingVisualiser from './visualisers/sortingVisualiser'
 
 function App() {
-  return <h1>Hello, React is working!</h1>;
+  return (
+    <div className="App">
+      <SortingVisualiser />
+    </div>
+  );
 }
 
 export default App;
