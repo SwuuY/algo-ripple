@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { bubbleSort } from '../algorithms/bubblesort';
+import { bubbleSort } from '../algorithms/sorting/bubbleSort';
+import { insertionSort } from '../algorithms/sorting/insertionSort';
 
-const SortingVisualiser = () => {
+const SortingVisualiser = ({algorithm}) => {
   const [array, setArray] = useState([]);
   const [highlight, setHighlight] = useState([]);
   const [sortingState, setSortingState] = useState('idle'); // 'idle', 'running', 'paused'
   const cancelRequested = useRef(false);
-  const pauseRequested = useRef(false);  // NEW ref for pause
-
+  const pauseRequested = useRef(false);  // NEW ref for pause 
+  
   useEffect(() => {
     resetArray();
   }, []);
@@ -29,7 +30,7 @@ const SortingVisualiser = () => {
     cancelRequested.current = false;
     pauseRequested.current = false;
 
-    const generator = bubbleSort(array);
+    const generator = algorithm(array);
 
     for (let step of generator) {
       if (cancelRequested.current) break;
