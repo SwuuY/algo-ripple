@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { bubbleSort } from '../algorithms/sorting/bubbleSort';
 import { insertionSort } from '../algorithms/sorting/insertionSort';
+import { mergeSort } from '../algorithms/sorting/mergeSort';
 
 const SortingVisualiser = ({algorithm}) => {
   const [array, setArray] = useState([]);
   const [highlight, setHighlight] = useState([]);
   const [sortingState, setSortingState] = useState('idle'); // 'idle', 'running', 'paused'
+  const [stepType, setStepType] = useState('null');
   const cancelRequested = useRef(false);
   const pauseRequested = useRef(false);  // NEW ref for pause 
   
@@ -42,7 +44,7 @@ const SortingVisualiser = ({algorithm}) => {
       }
       if (cancelRequested.current) break;
 
-      if (step.type === 'compare' || step.type === 'swap') {
+      if (step.type === 'compare' || step.type === 'swap' || step.type ==='overwrite') {
         setHighlight(step.indices);
         if (step.array) setArray(step.array);
       }
@@ -73,9 +75,7 @@ const SortingVisualiser = ({algorithm}) => {
 
   return (
     <div className="max-w-5xl mx-auto mt-10 px-5 font-sans">
-      <h2 className="text-4xl text-center mb-8 font-bold text-blue-700">
-        Bubble Sort Visualizer
-      </h2>
+
       <div className="flex items-end h-80 bg-gray-100 rounded-xl p-4 shadow-md mb-8">
         {array.map((val, idx) => (
           <div

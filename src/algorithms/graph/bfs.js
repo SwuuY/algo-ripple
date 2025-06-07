@@ -1,19 +1,31 @@
 // src/algorithms/graph/bfs.js
-export function* bfs(graph, start) {
-  const visited = new Set();
+export function bfs(grid, start) {
   const queue = [start];
+  const visited = [];
+  const seen = new Set();
+  seen.add(`${start.row}-${start.col}`);
 
   while (queue.length) {
-    const node = queue.shift();
-    if (visited.has(node)) continue;
+    const { row, col } = queue.shift();
+    visited.push({ row, col });
 
-    visited.add(node);
-    yield { visited: Array.from(visited) };
+    for (const [dx, dy] of [
+      [0, 1], [1, 0], [0, -1], [-1, 0],
+    ]) {
+      const newRow = row + dx;
+      const newCol = col + dy;
 
-    for (let neighbor of graph[node] || []) {
-      if (!visited.has(neighbor)) {
-        queue.push(neighbor);
+      if (
+        newRow >= 0 && newRow < grid.length &&
+        newCol >= 0 && newCol < grid[0].length &&
+        !seen.has(`${newRow}-${newCol}`) &&
+        !grid[newRow][newCol].isWall
+      ) {
+        queue.push({ row: newRow, col: newCol });
+        seen.add(`${newRow}-${newCol}`);
       }
     }
   }
+
+  return visited;
 }

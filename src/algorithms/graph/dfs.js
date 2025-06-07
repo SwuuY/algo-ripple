@@ -1,18 +1,30 @@
-export function* dfs(graph, start) {
-  const visited = new Set();
+export function dfs(grid, start) {
   const stack = [start];
+  const visited = [];
+  const seen = new Set();
+  seen.add(`${start.row}-${start.col}`);
 
   while (stack.length) {
-    const node = stack.pop();
-    if (visited.has(node)) continue;
+    const { row, col } = stack.pop();
+    visited.push({ row, col });
 
-    visited.add(node);
-    yield { visited: Array.from(visited) };
+    for (const [dx, dy] of [
+      [0, 1], [1, 0], [0, -1], [-1, 0],
+    ]) {
+      const newRow = row + dx;
+      const newCol = col + dy;
 
-    for (let neighbor of graph[node] || []) {
-      if (!visited.has(neighbor)) {
-        stack.push(neighbor);
+      if (
+        newRow >= 0 && newRow < grid.length &&
+        newCol >= 0 && newCol < grid[0].length &&
+        !seen.has(`${newRow}-${newCol}`) &&
+        !grid[newRow][newCol].isWall
+      ) {
+        stack.push({ row: newRow, col: newCol });
+        seen.add(`${newRow}-${newCol}`);
       }
     }
   }
+
+  return visited;
 }
