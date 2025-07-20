@@ -6,6 +6,7 @@ import React from 'react';
 
 function App() {
   return (
+
     <BrowserRouter basename="/algo-ripple">
       <nav className="bg-white shadow-md px-6 py-4 flex items-center justify-between">
         <Link 
@@ -35,7 +36,6 @@ function App() {
       </Routes>
     </BrowserRouter>
   );
-
 }
 
 export default App;
